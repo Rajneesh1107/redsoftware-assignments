@@ -60,3 +60,14 @@ exports.generateAccessToken = (payload) => {
 
   return token;
 };
+
+//verify jwt token
+
+exports.verifyAccessToken = (token) => {
+  try {
+    const decoded = jwt.verify(token, accessKey);
+    return decoded;
+  } catch (error) {
+    return false;
+  }
+};
