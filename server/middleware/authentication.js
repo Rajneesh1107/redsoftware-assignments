@@ -19,7 +19,7 @@ exports.auth = (req, res, next) => {
         error: "Token is invalid, please login again!",
       });
     }
-    req.body = { ...req.body, ...decoded };
+    req.body = { ...req.body, userDetails: { ...decoded } };
     next();
   } catch (error) {
     return res.status(http.BAD_REQUEST).send({
