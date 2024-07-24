@@ -58,6 +58,7 @@ exports.registerUser = async (req, res) => {
     res.status(http.BAD_REQUEST).send({ msg: "error from catch block", error });
   }
 };
+
 exports.login = async (req, res) => {
   const { email, password, username } = req.body;
 
@@ -112,6 +113,35 @@ exports.login = async (req, res) => {
   } catch (error) {
     // send error message
     res.status(http.INTERNAL_SERVER_ERROR).send({ msg: "error", error });
+  }
+};
+
+exports.userDetails = async (req, res) => {
+  const { id } = req.params;
+  try {
+    // check user Id is find or not
+    if (!id) {
+      // if user id is missing send a message
+      res
+        .status(http.INTERNAL_SERVER_ERROR)
+        .send({ msg: "error", error: "user id is not found " });
+      return;
+    }
+
+    // find the user details by userId
+    const user = await User.findOne({ _id: id }, { password: 0 });
+
+    // if user is not found in the database
+    if (!user) {
+      res
+        .status(http.NOT_FOUND)
+        .send({ msg: "error", error: "user is not found" });
+    }
+
+    // send the user details to client
+    res.status(http.OK).send({ msg: "success", user });
+  } catch (error) {
+    res.status(http.BAD_REQUEST).send({ msg: "error", error: error.message });
   }
 };
 
