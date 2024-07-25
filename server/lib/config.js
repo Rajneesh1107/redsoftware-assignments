@@ -7,6 +7,8 @@ module.exports = {
   saltRound: process.env.SALT_ROUND,
   accessKey: process.env.SECRET_ACCESS_KEY_USER,
   refreshKey: process.env.SECRET_REFRESH_KEY_USER,
+  emailNode: process.env.EMAIL,
+  emailPassword: process.env.EMAIL_PASSWORD,
   corsOptions: {
     origin: "*",
     optionsSuccessStatus: 200,

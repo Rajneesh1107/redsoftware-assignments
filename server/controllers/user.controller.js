@@ -8,8 +8,6 @@ const {
 const { http } = require("../lib/helper/const");
 const User = require("../models/user.model");
 
-exports.Users = async (req, res) => {};
-
 exports.registerUser = async (req, res) => {
   const { username, email, password } = req.body;
 
@@ -116,6 +114,8 @@ exports.login = async (req, res) => {
     res.status(http.INTERNAL_SERVER_ERROR).send({ msg: "error", error });
   }
 };
+
+// get usersDetails
 
 exports.userDetails = async (req, res) => {
   const { id } = req.params;

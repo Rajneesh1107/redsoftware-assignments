@@ -6,7 +6,6 @@ const {
 } = require("../../controllers/user.controller");
 
 module.exports = (app) => {
-  app.get("/api/allusers", Users);
   app.get("/api/user/:id", userDetails);
   app.post("/api/register", registerUser);
   app.post("/api/login", login);

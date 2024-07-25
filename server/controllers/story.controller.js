@@ -1,5 +1,6 @@
 const { validateObjectId } = require("../lib/helper/common");
 const { http } = require("../lib/helper/const");
+const { sendEmail } = require("../lib/helper/nodemailer");
 const Story = require("../models/story.model");
 
 // Create a new story
@@ -145,6 +146,47 @@ exports.storyContribution = async (req, res) => {
 
     // Send response to the client after adding the contribution
     res.status(http.CREATED).send({ msg: "success", story });
+  } catch (error) {
+    console.error(error.message);
+    res
+      .status(http.INTERNAL_SERVER_ERROR)
+      .send({ msg: "error", error: error.message });
+  }
+};
+
+// send story to email
+exports.sendStory = async (req, res) => {
+  const { email } = req.body;
+  const { id } = req.params;
+
+  try {
+    // Check ID is mongoDB id
+    if (!id || !validateObjectId(id)) {
+      res
+        .status(http.BAD_REQUEST)
+        .send({ msg: "error", error: "id is not valid" });
+      return;
+    }
+
+    // Retrieve story details with contributions' user details
+    const story = await Story.findOne({ _id: id })
+      .populate("createdBy", ["email", "username"])
+      .populate("contributions.user", ["username"]);
+
+    // check story found or not
+    if (!story) {
+      res
+        .status(http.NOT_FOUND)
+        .send({ msg: "error", error: "No Story found " });
+      return;
+    }
+
+    const sendToEmail = await sendEmail(email, story);
+
+    res.status(http.OK).send({
+      msg: "success",
+      sendToEmail,
+    });
   } catch (error) {
     console.error(error.message);
     res
