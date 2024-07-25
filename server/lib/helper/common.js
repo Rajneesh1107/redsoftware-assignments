@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const { saltRound, accessKey } = require("../config");
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 //password validation fucntion
 exports.validatePassword = (password) => {
   //check password length is getter than 8
@@ -70,4 +71,9 @@ exports.verifyAccessToken = (token) => {
   } catch (error) {
     return false;
   }
+};
+
+// Function to validate ObjectId
+exports.validateObjectId = (id) => {
+  return mongoose.Types.ObjectId.isValid(id);
 };

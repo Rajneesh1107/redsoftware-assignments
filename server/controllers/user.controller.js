@@ -3,6 +3,7 @@ const {
   hashedPassword,
   comparePassword,
   generateAccessToken,
+  validateObjectId,
 } = require("../lib/helper/common");
 const { http } = require("../lib/helper/const");
 const User = require("../models/user.model");
@@ -119,12 +120,12 @@ exports.login = async (req, res) => {
 exports.userDetails = async (req, res) => {
   const { id } = req.params;
   try {
-    // check user Id is find or not
-    if (!id) {
-      // if user id is missing send a message
+    // validate user Id should be a mongoDB id.
+    if (!id || !validateObjectId(id)) {
+      // if user id is not valid send a message
       res
         .status(http.INTERNAL_SERVER_ERROR)
-        .send({ msg: "error", error: "user id is not found " });
+        .send({ msg: "error", error: "id is not valid " });
       return;
     }
 

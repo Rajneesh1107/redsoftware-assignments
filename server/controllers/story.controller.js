@@ -1,3 +1,4 @@
+const { validateObjectId } = require("../lib/helper/common");
 const { http } = require("../lib/helper/const");
 const Story = require("../models/story.model");
 
@@ -68,11 +69,11 @@ exports.storyDetails = async (req, res) => {
   const { id } = req.params;
 
   try {
-    // Check if the ID is provided
-    if (!id) {
+    // Check ID is mongoDB id
+    if (!id || !validateObjectId(id)) {
       res
         .status(http.BAD_REQUEST)
-        .send({ msg: "error", error: "id is not found" });
+        .send({ msg: "error", error: "id is not valid" });
       return;
     }
 
@@ -81,7 +82,14 @@ exports.storyDetails = async (req, res) => {
       "contributions.userId",
       ["username", "email"]
     );
-    console.log(story);
+
+    // check story found or not
+    if (!story) {
+      res
+        .status(http.NOT_FOUND)
+        .send({ msg: "error", error: "No Story found " });
+      return;
+    }
     res.status(http.OK).send({
       msg: "success",
       contributions: story.contributions.length,
@@ -101,6 +109,14 @@ exports.storyContribution = async (req, res) => {
   const { id } = req.params;
 
   try {
+    // Check ID is mongoDB id
+    if (!id || !validateObjectId(id)) {
+      res
+        .status(http.BAD_REQUEST)
+        .send({ msg: "error", error: "id is not valid" });
+      return;
+    }
+
     // Retrieve the story by ID
     let story = await Story.findOne({ _id: id }).populate(
       "contributions.user",
