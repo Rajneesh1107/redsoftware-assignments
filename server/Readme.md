@@ -15,8 +15,7 @@
 
 # Deployed Url
 
-[https://deploy-redsoft-backend.onrender.com](https://deploy-redsoft-backend.onrender.com) 
-
+[https://deploy-redsoft-backend.onrender.com](https://deploy-redsoft-backend.onrender.com)
 
 ## Project Overview
 
@@ -35,11 +34,12 @@ Before you begin, ensure you have met the following requirements:
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/Rajneesh1107/deploy-redsoft-backend.git
+   git clone https://github.com/Rajneesh1107/redsoftware-assignments.git
    ```
 
 2. Navigate to the project directory:
-   cd deploy-redsoft-backend
+   cd redsoftware-assignments
+   cd server
 
 3. Install the dependencies:
    ```sh
@@ -51,6 +51,7 @@ Before you begin, ensure you have met the following requirements:
 Create a .env file in the root directory and add the following environment variables:
 
 Required Environment Variables
+
 - PORT: The port number on which the server will run.
 - MONGO_URI: The connection string for your MongoDB database.
 - SALT_ROUND: The number of salt rounds to use for hashing passwords.
